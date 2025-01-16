@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Components Input Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+		
+		input[type="number1"] {
+            width: 50%;
+            padding: 6px 8px;
+            border: 4px solid #ccc;
+            border-radius: 1px;
+            box-sizing: border-box;
+        }
+		
+		input[type="number2"] {
+            width: 80%;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+		
+        button {
+            display: block;
+            width: 50%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>加班/請假費時薪</h1>
+    <div class="form-container">
+        <form id="salaryForm">
+            <!-- Table for Salary Components -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>加項</th>
+                        <th>金額</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>本薪</td>
+                        <td><input type="number" id="baseSalary" name="baseSalary" step="0.01" required></td>
+                    </tr>
+                    <tr>
+                        <td>伙食津貼</td>
+                        <td><input type="number" id="mealAllowance" name="mealAllowance" step="0.01"></td>
+                    </tr>
+                    <tr>
+                        <td>工作/職務津貼</td>
+                        <td><input type="number" id="jobAllowance" name="jobAllowance" step="0.01"></td>
+                    </tr>
+                    <tr>
+                        <td>技術員津貼</td>
+                        <td><input type="number" id="technicianAllowance" name="technicianAllowance" step="0.01"></td>
+                    </tr>
+                    <tr>
+                        <td>班別津貼</td>
+                        <td><input type="number" id="shiftAllowance" name="shiftAllowance" step="0.01"></td>
+                    </tr>
+                    <tr>
+                        <td>績效獎金</td>
+                        <td><input type="number" id="performanceBonus" name="performanceBonus" step="0.01"></td>
+                    </tr>
+					 <tr>
+                        <td>其他</td>
+                        <td><input type="number" id="otherss" name="otherss" step="0.01"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Hourly Rate -->
+            <h3>加班費/小時</h3>
+            <p>1小時: <span id="hourlyRate">$0.00</span></p>
+
+            <!-- Table for Overtime Rates -->
+            <h3>加班</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>倍</th>
+                        <th>小時</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1.0</td>
+                        <td><input type="number1" id="hours1" name="hours1" step="0.01" oninput="calculateOvertime()"></td>
+                        <td><input type="number2" id="total1" name="total1" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>1.34</td>
+                        <td><input type="number1" id="hours2" name="hours2" step="0.01" oninput="calculateOvertime()"></td>
+                        <td><input type="number2" id="total2" name="total2" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>1.67</td>
+                        <td><input type="number1" id="hours3" name="hours3" step="0.01" oninput="calculateOvertime()"></td>
+                        <td><input type="number2" id="total3" name="total3" readonly></td>
+                    </tr>
+					<tr>
+                        <td>2.0</td>
+                        <td><input type="number1" id="hours4" name="hours4" step="0.01" oninput="calculateOvertime()"></td>
+                        <td><input type="number2" id="total4" name="total4" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>2.67</td>
+                        <td><input type="number1" id="hours5" name="hours5" step="0.01" oninput="calculateOvertime()"></td>
+                        <td><input type="number2" id="total5" name="total5" readonly></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right; font-weight: bold;">共</td>
+                        <td><input type="number2" id="totalOvertime" name="totalOvertime" readonly></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" onclick="calculateHourlyRate()">算</button>
+        </form>
+    </div>
+
+    <script>
+        function calculateHourlyRate() {
+            const baseSalary = parseFloat(document.getElementById("baseSalary").value) || 0;
+            const mealAllowance = parseFloat(document.getElementById("mealAllowance").value) || 0;
+            const jobAllowance = parseFloat(document.getElementById("jobAllowance").value) || 0;
+            const technicianAllowance = parseFloat(document.getElementById("technicianAllowance").value) || 0;
+            const shiftAllowance = parseFloat(document.getElementById("shiftAllowance").value) || 0;
+            const performanceBonus = parseFloat(document.getElementById("performanceBonus").value) || 0;
+			const otherss = parseFloat(document.getElementById("otherss").value) || 0;
+            // Formula for hourly rate
+            const hourlyRate = (baseSalary + mealAllowance + jobAllowance + shiftAllowance + performanceBonus + technicianAllowance+otherss) / 240;
+
+            // Format and update hourly rate display
+            document.getElementById("hourlyRate").textContent = formatCurrency(hourlyRate);
+
+            // Trigger overtime calculation
+            calculateOvertime();
+        }
+
+        function calculateOvertime() {
+            const hourlyRateText = document.getElementById("hourlyRate").textContent;
+            const hourlyRate = parseFloat(hourlyRateText.replace(/[^0-9.-]+/g, "")) || 0;
+
+            const rates = [1.0, 1.34, 1.67, 2.0, 2.67];
+            let totalOvertimeMoney = 0;
+
+            rates.forEach((rate, index) => {
+                const hours = parseFloat(document.getElementById(`hours${index + 1}`).value) || 0;
+                const total = hourlyRate * rate * hours;
+
+                // Update individual overtime totals as formatted currency
+                document.getElementById(`total${index + 1}`).value = formatCurrency(total);
+                totalOvertimeMoney += total;
+            });
+
+            // Strict rounding for total overtime money and format it
+            const roundedTotalOvertimeMoney = Math.round(totalOvertimeMoney);
+
+            // Update total overtime money field
+            document.getElementById("totalOvertime").value = formatCurrency(roundedTotalOvertimeMoney);
+        }
+
+        // Helper function to format values as currency
+        function formatCurrency(value) {
+            return new Intl.NumberFormat("zh-TW", {
+                style: "currency",
+                currency: "TWD",
+            }).format(value);
+        }
+    </script>
+</body>
+</html>
